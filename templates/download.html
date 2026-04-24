@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download — LinguaOCR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --ink: #0d0d0d;
+            --paper: #faf8f3;
+            --accent: #c8460a;
+            --accent2: #1a6b5a;
+            --muted: #6b6b6b;
+            --card-bg: #ffffff;
+            --border: #e8e0d0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 20px 48px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--ink);
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .logo-icon { width: 32px; height: 32px; background: var(--ink); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+        .logo-icon i { color: var(--paper); font-size: 14px; }
+
+        .success-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(26,107,90,0.1);
+            color: var(--accent2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .page-content {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 56px 24px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .check-circle {
+            width: 72px; height: 72px;
+            background: linear-gradient(135deg, var(--accent2), #2d9e87);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 24px rgba(26,107,90,0.3);
+            animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .check-circle i { color: white; font-size: 30px; }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
+
+        .subtitle { font-size: 16px; color: var(--muted); }
+
+        /* Preview + downloads grid */
+        .download-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .preview-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .preview-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border);
+            background: var(--paper);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preview-title { font-weight: 600; font-size: 15px; }
+
+        .lang-tag {
+            background: rgba(26,107,90,0.1);
+            color: var(--accent2);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .preview-body {
+            padding: 28px;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .preview-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #2c2c2c;
+            white-space: pre-wrap;
+        }
+
+        .preview-body::-webkit-scrollbar { width: 6px; }
+        .preview-body::-webkit-scrollbar-track { background: var(--paper); }
+        .preview-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        /* Download sidebar */
+        .dl-sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+        .dl-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .dl-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dl-option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .dl-option:last-of-type { margin-bottom: 0; }
+
+        .dl-option:hover {
+            border-color: var(--ink);
+            background: var(--paper);
+            transform: translateX(4px);
+        }
+
+        .dl-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .dl-icon.pdf { background: rgba(200,70,10,0.1); color: var(--accent); }
+        .dl-icon.txt { background: rgba(26,107,90,0.1); color: var(--accent2); }
+
+        .dl-info {}
+        .dl-name { font-weight: 600; font-size: 15px; margin-bottom: 3px; }
+        .dl-desc { font-size: 12px; color: var(--muted); }
+
+        .dl-arrow { margin-left: auto; color: var(--muted); font-size: 13px; }
+
+        .new-upload-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            border-radius: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex; align-items: center; justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-top: 8px;
+        }
+        .new-upload-btn:hover { background: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+
+        @media (max-width: 768px) {
+            header { padding: 16px 20px; }
+            .page-content { padding: 36px 16px; }
+            .download-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/" class="logo">
+        <div class="logo-icon"><i class="fas fa-language"></i></div>
+        LinguaOCR
+    </a>
+    <div class="success-badge">
+        <i class="fas fa-check-circle"></i>
+        Text Ready
+    </div>
+</header>
+
+<div class="page-content">
+    <div class="page-header">
+        <div class="check-circle"><i class="fas fa-check"></i></div>
+        <h1>Your Text is Ready!</h1>
+        <p class="subtitle">Formatted successfully · Choose a download format below</p>
+    </div>
+
+    <div class="download-grid">
+        <div class="preview-card">
+            <div class="preview-header">
+                <span class="preview-title">Formatted Text Preview</span>
+                <span class="lang-tag">{{ language }}</span>
+            </div>
+            <div class="preview-body">
+                <div class="preview-text">{{ text }}</div>
+            </div>
+        </div>
+
+        <div class="dl-sidebar">
+            <div class="dl-card">
+                <h3><i class="fas fa-download" style="margin-right:8px;opacity:0.6"></i> Download Options</h3>
+
+                <form action="/download/pdf" method="POST">
+                    <button type="submit" class="dl-option" style="width:100%;background:none;font-family:inherit;text-align:left;">
+                        <div class="dl-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                        <div class="dl-info">
+                            <div class="dl-name">PDF Document</div>
+                            <div class="dl-desc">Formatted · Print-ready · A4 layout</div>
+                        </div>
+                        <div class="dl-arrow"><i class="fas fa-arrow-down"></i></div>
+                    </button>
+                </form>
+
+                <form action="/download/txt" method="POST">
+                    <button type="submit" class="dl-option" style="width:100%;background:none;font-family:inherit;text-align:left;margin-top:12px;">
+                        <div class="dl-icon txt"><i class="fas fa-file-alt"></i></div>
+                        <div class="dl-info">
+                            <div class="dl-name">Plain Text (.txt)</div>
+                            <div class="dl-desc">UTF-8 encoded · Universal format</div>
+                        </div>
+                        <div class="dl-arrow"><i class="fas fa-arrow-down"></i></div>
+                    </button>
+                </form>
+            </div>
+
+            <a href="/" class="new-upload-btn">
+                <i class="fas fa-plus"></i>
+                Process Another Image
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
